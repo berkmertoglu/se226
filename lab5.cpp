@@ -3,9 +3,9 @@
 using namespace std;
 
 double geometricSum(int n, double r) {
-    // Base case
+    
     if (n == 0)
-        return 1;  // r^0 = 1
+        return 1; 
 
     return pow(r, n) + geometricSum(n - 1, r);
 }
