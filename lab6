@@ -1,1 +1,197 @@
+shape_calculator.py
+import geometry_utils
 
+
+
+def get_positive_float(prompt):
+    try:
+        value = float(input(prompt))
+        if value <= 0:
+            raise ValueError("Dimensions must be strictly positive.")
+        return value
+    except ValueError as e:
+        raise ValueError("Input Error: " + str(e))
+
+
+def main():
+    print("Available shapes: circle, rectangle, triangle")
+    print("Available calculations: _area, _perimeter (e.g., circle_area)")
+
+    # operation → function mapping
+    operations = {
+        "circle_area": lambda: geometry_utils.circle_area(get_positive_float("Enter radius: ")),
+        "circle_perimeter": lambda: geometry_utils.circle_perimeter(get_positive_float("Enter radius: ")),
+        "rectangle_area": lambda: geometry_utils.rectangle_area(
+            get_positive_float("Enter width: "),
+            get_positive_float("Enter height: ")
+        ),
+        "rectangle_perimeter": lambda: geometry_utils.rectangle_perimeter(
+            get_positive_float("Enter width: "),
+            get_positive_float("Enter height: ")
+        ),
+        "triangle_area": lambda: geometry_utils.triangle_area(
+            get_positive_float("Enter base: "),
+            get_positive_float("Enter height: ")
+        )
+    }
+
+    try:
+        operation = input("Enter the operation you want to perform: ").strip().lower()
+
+        if operation not in operations:
+            print("Invalid operation.")
+            return
+
+        result = operations[operation]()
+        print(f"Result: {result:.2f}")
+
+    except ValueError as e:
+        print(e)
+
+
+if __name__ == "__main__":
+    main()
+------------------------------------------------------------------------------------------------
+geometry_utils.py
+# geometry_utils.py
+import math
+
+
+def circle_area(radius):
+    """Returns area of a circle. Raises ValueError for invalid radius."""
+    try:
+        if radius <= 0:
+            raise ValueError("Radius must be greater than 0.")
+        return math.pi * radius ** 2
+    except TypeError:
+        raise TypeError("Radius must be a number.")
+
+
+def circle_perimeter(radius):
+    """Returns circumference of a circle."""
+    return 2 * math.pi * radius
+
+
+def rectangle_area(width, height):
+    """Returns area of a rectangle."""
+    return width * height
+
+
+def rectangle_perimeter(width, height):
+    """Returns perimeter of a rectangle."""
+    return 2 * (width + height)
+
+
+def triangle_area(base, height):
+    """Returns area of a triangle."""
+    return 0.5 * base * height
+
+
+def main():
+    print("Available shapes: circle, rectangle, triangle")
+    print("Available calculations: _area, _perimeter (e.g., circle_area)")
+
+    operation = input("Enter the operation you want to perform: ").strip().lower()
+
+    try:
+        if operation == "circle_area":
+            radius = float(input("Enter radius: "))
+            result = circle_area(radius)
+
+        elif operation == "circle_perimeter":
+            radius = float(input("Enter radius: "))
+            result = circle_perimeter(radius)
+
+        elif operation == "rectangle_area":
+            width = float(input("Enter width: "))
+            height = float(input("Enter height: "))
+            result = rectangle_area(width, height)
+
+        elif operation == "rectangle_perimeter":
+            width = float(input("Enter width: "))
+            height = float(input("Enter height: "))
+            result = rectangle_perimeter(width, height)
+
+        elif operation == "triangle_area":
+            base = float(input("Enter base: "))
+            height = float(input("Enter height: "))
+            result = triangle_area(base, height)
+
+        else:
+            print("Invalid operation.")
+            return
+
+        print(f"Result: {result:.2f}")
+
+    except ValueError as e:
+        print(f"Error: {e}")
+    except TypeError as e:
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()
+--------------------------------------------------------------------------------------
+data_main.py
+from data_package import strip_whitespaces, remove_duplicates, calculate_mean, find_maximum, find_minimum
+
+
+def main():
+
+    raw_input = input('Enter comma-separated numbers (e.g. "12, 5, 12, 8, 21"): ')
+
+    try:
+
+        string_list = raw_input.split(",")
+
+
+        cleaned_strings = strip_whitespaces(string_list)
+
+
+        numbers = [int(x) for x in cleaned_strings]
+
+
+        unique_numbers = remove_duplicates(numbers)
+
+
+        mean_value = calculate_mean(unique_numbers)
+        max_value = find_maximum(unique_numbers)
+        min_value = find_minimum(unique_numbers)
+
+
+        print(f"Cleaned Data: {unique_numbers}")
+        print(f"Mean: {mean_value:.2f}")
+        print(f"Maximum: {max_value}")
+        print(f"Minimum: {min_value}")
+
+    except ValueError:
+        print("Error: Please enter valid numeric values separated by commas.")
+
+
+if __name__ == "__main__":
+    main()
+------------------------------------------------------------------------------------------
+cleaner.py 
+def remove_duplicates(data_list):
+    return list(set(data_list))
+
+
+def strip_whitespaces(string_list):
+    return [s.strip() for s in string_list]
+--------------------------------------------------------------------------------------
+analyzer.py
+
+def calculate_mean(num_list):
+    return sum(num_list) / len(num_list)
+
+
+def find_maximum(num_list):
+    return max(num_list)
+
+
+def find_minimum(num_list):
+    return min(num_list)
+-----------------------------------------------------------------------------------
+init.py
+from data_package.cleaner import remove_duplicates, strip_whitespaces
+from data_package.analyzer import calculate_mean, find_maximum, find_minimum
