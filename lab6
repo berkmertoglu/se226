@@ -1,0 +1,51 @@
+import geometry_utils
+
+
+def get_positive_float(prompt):
+    try:
+        value = float(input(prompt))
+        if value <= 0:
+            raise ValueError("Dimensions must be strictly positive.")
+        return value
+    except ValueError as e:
+        raise ValueError("Input Error: " + str(e))
+
+
+def main():
+    print("Available shapes: circle, rectangle, triangle")
+    print("Available calculations: _area, _perimeter (e.g., circle_area)")
+
+    # operation → function mapping
+    operations = {
+        "circle_area": lambda: geometry_utils.circle_area(get_positive_float("Enter radius: ")),
+        "circle_perimeter": lambda: geometry_utils.circle_perimeter(get_positive_float("Enter radius: ")),
+        "rectangle_area": lambda: geometry_utils.rectangle_area(
+            get_positive_float("Enter width: "),
+            get_positive_float("Enter height: ")
+        ),
+        "rectangle_perimeter": lambda: geometry_utils.rectangle_perimeter(
+            get_positive_float("Enter width: "),
+            get_positive_float("Enter height: ")
+        ),
+        "triangle_area": lambda: geometry_utils.triangle_area(
+            get_positive_float("Enter base: "),
+            get_positive_float("Enter height: ")
+        )
+    }
+
+    try:
+        operation = input("Enter the operation you want to perform: ").strip().lower()
+
+        if operation not in operations:
+            print("Invalid operation.")
+            return
+
+        result = operations[operation]()
+        print(f"Result: {result:.2f}")
+
+    except ValueError as e:
+        print(e)
+
+
+if __name__ == "__main__":
+    main()
